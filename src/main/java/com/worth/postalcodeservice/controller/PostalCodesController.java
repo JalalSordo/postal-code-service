@@ -4,12 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.worth.postalcodeservice.model.Result;
+import com.worth.postalcodeservice.dto.Result;
+import com.worth.postalcodeservice.model.Location;
 import com.worth.postalcodeservice.service.PostalCodesService;
+import com.worth.postalcodeservice.service.impl.LocationNotFoundException;
 
 @RestController
 @RequestMapping("/api/postal-codes")
@@ -30,5 +35,14 @@ public class PostalCodesController {
 		
 		return postalCodesService.calculateDistance(from,to);
 	}
-
+	
+	@PutMapping("/update-coordinates")
+	@ResponseBody
+	public Location updatePostalCodeCoordinates(
+			@RequestBody(required = true) Location location) throws LocationNotFoundException {
+		
+		return postalCodesService.updatePostalCodeCoordinates(location);
+	}
+	
+	
 }

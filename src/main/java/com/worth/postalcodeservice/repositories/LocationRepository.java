@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.worth.postalcodeservice.model.Location;
 
 @Repository
-public interface PostalCodesRepository extends CrudRepository<Location, Long>{
+public interface LocationRepository extends CrudRepository<Location, Long>{
 	
 	@Query("from Location l where l.postalCode=:postalCode")
-	public Location getLocationByPostalCode(@Param(value = "postalCode") String postalCode);
+	public Location findOneByPostalCode(@Param(value = "postalCode") String postalCode);
 
 
 
