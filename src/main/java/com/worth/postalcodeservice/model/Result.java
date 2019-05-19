@@ -9,6 +9,6 @@ public class Result {
 	private Location fromLocation;
 	private Location toLocation;
 	private float distance;
-	private String unit;
+	private String unit = Constants.DISTANCE_UNIT;
 
 }
