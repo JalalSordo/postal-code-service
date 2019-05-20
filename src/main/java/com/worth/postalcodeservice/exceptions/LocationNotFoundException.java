@@ -1,4 +1,4 @@
-package com.worth.postalcodeservice.service.impl;
+package com.worth.postalcodeservice.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.github.marlonlom.helpers.coordinates.LatsLngs.Exception;
 import com.worth.postalcodeservice.dto.LocationDTO;
 import com.worth.postalcodeservice.dto.Result;
+import com.worth.postalcodeservice.exceptions.LocationNotFoundException;
 import com.worth.postalcodeservice.model.Location;
 import com.worth.postalcodeservice.repositories.LocationRepository;
 import com.worth.postalcodeservice.service.PostalCodesService;
@@ -21,8 +22,8 @@ public class PostalCodesServiceImpl implements PostalCodesService {
 	public Result calculateDistance(String fromPostalCode, String toPostalCode) {
 
 		Result result = new Result();
-		Location fromLocation = locationRepository.findOneByPostalCode(fromPostalCode);
-		Location toLocation = locationRepository.findOneByPostalCode(toPostalCode);
+		Location fromLocation = findOneByPostalCode(fromPostalCode);
+		Location toLocation = findOneByPostalCode(toPostalCode);
 
 		if (fromLocation != null && toLocation != null) {
 			result.setDistance((float) GeoUtils.distance(fromLocation.getLatitude(), fromLocation.getLongitude(),
@@ -43,7 +44,7 @@ public class PostalCodesServiceImpl implements PostalCodesService {
 	@Override
 	public Location updatePostalCodeCoordinates(Location aLocation) throws LocationNotFoundException {
 
-		Location loadedLocation = locationRepository.findOneByPostalCode(aLocation.getPostalCode());
+		Location loadedLocation = findOneByPostalCode(aLocation.getPostalCode());
 		if (loadedLocation != null) {
 			loadedLocation.setLatitude(aLocation.getLatitude());
 			loadedLocation.setLongitude(aLocation.getLongitude());
@@ -52,6 +53,22 @@ public class PostalCodesServiceImpl implements PostalCodesService {
 			throw new LocationNotFoundException(aLocation.getPostalCode());
 		}
 
+	}
+
+	@Override
+	public void deleteLocationByPostalCode(String  postalCode) throws LocationNotFoundException {
+		Location loadedLocation = findOneByPostalCode(postalCode);
+		if (loadedLocation != null) {
+			locationRepository.delete(loadedLocation);
+		} else {
+			throw new LocationNotFoundException(postalCode);
+		}
+
+	}
+
+	@Override
+	public Location findOneByPostalCode(String postalCode) throws LocationNotFoundException {
+		return locationRepository.findOneByPostalCode(postalCode);
 	}
 
 }

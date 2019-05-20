@@ -1,5 +1,6 @@
 package com.worth.postalcodeservice.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,8 @@ public class Location {
 	@Setter(AccessLevel.NONE)
 	@JsonIgnore
 	private long id;
-
+	
+	@Column(unique=true)
 	private String postalCode;
 
 	private double latitude;
