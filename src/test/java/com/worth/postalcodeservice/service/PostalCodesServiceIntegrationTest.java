@@ -15,7 +15,7 @@ import com.worth.postalcodeservice.model.Location;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PostalCodesServiceTest {
+public class PostalCodesServiceIntegrationTest {
 
 	@Autowired
 	private PostalCodesService postalCodesService;

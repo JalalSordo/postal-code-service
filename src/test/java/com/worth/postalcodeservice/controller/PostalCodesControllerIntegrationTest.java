@@ -23,7 +23,7 @@ import com.worth.postalcodeservice.model.Location;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PostalCodesControllerTest {
+public class PostalCodesControllerIntegrationTest {
 
 	
 	private static final String PostalCode_ENDPOINT = "/api/postal-codes";

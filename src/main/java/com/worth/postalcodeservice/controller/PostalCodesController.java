@@ -17,6 +17,11 @@ import com.worth.postalcodeservice.exceptions.LocationNotFoundException;
 import com.worth.postalcodeservice.model.Location;
 import com.worth.postalcodeservice.service.PostalCodesService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api("Main Postal Code Service API endpoint, it supports calculating distance, update and delete a postal code")
 @RestController
 @RequestMapping("/api/postal-codes")
 public class PostalCodesController {
@@ -26,25 +31,32 @@ public class PostalCodesController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PostalCodesController.class);
 
+	@ApiOperation(value = "Returns the geographic (straight line) distance between two postal codes in the UK")
 	@GetMapping("/distance")
-	public Result calculateDistance(@RequestParam(required = true) String from,
-			@RequestParam(required = true) String to) {
-		logger.info("from " + from);
-		logger.info("to " + to);
+	public Result calculateDistance( @ApiParam(value = "The \"from\" Postal code parameter", required = true) @RequestParam(required = true) String from,
+			@ApiParam(value = "The \"to\" Postal code parameter", required = true) @RequestParam(required = true) String to) {
+		logger.debug("-->Executing : calculateDistance");
+		logger.debug("from " + from);
+		logger.debug("to " + to);
 
 		return postalCodesService.calculateDistance(from, to);
 	}
 
 	@PutMapping
 	@ResponseBody
-	public Location updatePostalCodeCoordinates(@RequestBody(required = true) Location location)
+	@ApiOperation(value = "Updates postal code coordinates of a location, latitude and longitude must be in decimals.")
+	public Location updatePostalCodeCoordinates(@ApiParam(value = "The Location object to update", required = true) @RequestBody(required = true) Location location)
 			throws LocationNotFoundException {
-
+		logger.debug("-->Executing : updatePostalCodeCoordinates");
+		logger.debug("location " + location.toString());
 		return postalCodesService.updatePostalCodeCoordinates(location);
 	}
 
 	@DeleteMapping
-	public void deletePostalCode(@RequestBody(required = true) String postalCode) throws LocationNotFoundException {
+	@ApiOperation(value = "Deletes a postal code along with their latitude and longitude")
+	public void deletePostalCode(@ApiParam(value = "The postal code of the location to delete", required = true) @RequestBody(required = true) String postalCode) throws LocationNotFoundException {
+		logger.debug("-->Executing : deletePostalCode");
+		logger.debug("postalCode " + postalCode);
 		postalCodesService.deleteLocationByPostalCode(postalCode);
 	}
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<statusListener
+		class="ch.qos.logback.core.status.NopStatusListener" />
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+	<property name="LOGS_HOME"
+		value="${user.home}/postal-code-service/logs" />
+
+	<appender name="FILE-THREAD"
+		class="ch.qos.logback.classic.sift.SiftingAppender">
+
+		<discriminator>
+			<key>logFileName</key>
+			<defaultValue>application</defaultValue>
+		</discriminator>
+
+		<sift>
+
+			<appender name="FILE-${logFileName}"
+				class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${LOGS_HOME}/${logFileName}.log</file>
+				<encoder
+					class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<Pattern>
+						%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{35} -
+						%msg%n
+					</Pattern>
+				</encoder>
+
+				<rollingPolicy
+					class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+					<FileNamePattern>${LOGS_HOME}/${logFileName}.%i.log.zip
+					</FileNamePattern>
+					<MinIndex>1</MinIndex>
+					<MaxIndex>10</MaxIndex>
+				</rollingPolicy>
+
+				<triggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+					<MaxFileSize>1MB</MaxFileSize>
+				</triggeringPolicy>
+
+			</appender>
+
+		</sift>
+
+	</appender>
+
+	<logger name="org.springframework.web" level="INFO"
+		additivity="false">
+		<appender-ref ref="FILE-THREAD" />
+	</logger>
+	<logger name="org.hibernate" level="INFO" additivity="false">
+		<appender-ref ref="FILE-THREAD" />
+	</logger>
+	<logger name="org.springframework.test" level="INFO"
+		additivity="false">
+		<appender-ref ref="FILE-THREAD" />
+	</logger>
+	<logger
+		name="springfox.documentation.spring.web.readers.operation"
+		level="ERROR" additivity="false">
+		<appender-ref ref="FILE-THREAD" />
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="FILE-THREAD" />
+	</root>
+
+</configuration>

@@ -11,9 +11,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 public class Location {
 
 	public Location() {
@@ -37,5 +39,7 @@ public class Location {
 	private double latitude;
 
 	private double longitude;
+	
+	
 
 }
